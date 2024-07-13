@@ -8,7 +8,7 @@
     >
       <v-carousel-item>
         <iframe
-          src="https://www.youtube.com/embed/rg6CiPI6h2g?autoplay=1&mute=1"
+          src="https://www.youtube.com/embed/DX1aBG9AdQU?autoplay=1&mute=1"
           frameborder="0"
           allow="autoplay; encrypted-media"
           allowfullscreen
