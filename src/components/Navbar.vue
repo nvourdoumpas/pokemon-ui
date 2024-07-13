@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import logo from "../assets/pokemon.png";
+import logo from "@/assets/pokemon.png";
 
 export default defineComponent({
   setup() {
