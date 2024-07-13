@@ -11,6 +11,14 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/pokemons",
+    name: "pokemons",
+    component: () => import("@/views/Pokemons.vue"),
+    meta: {
+      title: "Pokemons",
+    },
+  },
+  {
     path: "/about",
     name: "about",
     component: () => import("@/views/About.vue"),
