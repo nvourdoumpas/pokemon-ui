@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div v-if="loading" class="loader"></div>
+    <div v-if="loading">
+      <Loader />
+    </div>
     <div v-else>
       <v-row v-if="pokemons" justify="center">
         <v-col
@@ -54,7 +56,7 @@
 import { defineComponent } from "vue";
 import Pokemons from "@/types/getPokemonsResponse";
 import pokemonService from "@/services/pokemonService";
-import logo from "@/assets/pokemon.png";
+import Loader from "@/components/Loader/Loader.vue";
 
 export default defineComponent({
   setup() {
@@ -68,8 +70,10 @@ export default defineComponent({
       totalItems: 0 as number,
       itemsPerPage: 20 as number,
       totalPages: 0 as number,
-      logo,
     };
+  },
+  components: {
+    Loader,
   },
   watch: {
     totalItems() {
@@ -112,23 +116,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.loader {
-  display: inline-grid;
-  font-size: 50px;
-}
-.loader:before,
-.loader:after {
-  content: url("../assets/pokemon.png");
-  grid-area: 1/1;
-}
-.loader:after {
-  animation: l10 1s infinite;
-}
-@keyframes l10 {
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-</style>
+<style scoped></style>
