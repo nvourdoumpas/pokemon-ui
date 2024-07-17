@@ -12,7 +12,13 @@
           sm="4"
           lg="3"
         >
-          <v-card color="indigo" variant="tonal" class="mx-auto" link>
+          <v-card
+            color="indigo"
+            variant="tonal"
+            class="mx-auto"
+            link
+            @click="showPokemon(pokemon)"
+          >
             <v-img
               color="surface-variant"
               height="300"
@@ -111,6 +117,11 @@ export default defineComponent({
       var splittedUrl = pokemon.url.split("/");
       var id = splittedUrl[splittedUrl.length - 2];
       return id;
+    },
+    showPokemon(pokemon: any) {
+      let id = this.getPokemonId(pokemon);
+      console.log("pokemon ", id);
+      this.$router.push(`/pokemons/${id}`);
     },
   },
 });
