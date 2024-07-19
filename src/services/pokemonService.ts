@@ -10,12 +10,8 @@ class TutorialDataService {
     });
   }
 
-  get(id: any): Promise<any> {
-    return apiInstance.get(`/tutorials/${id}`);
-  }
-
-  findByTitle(title: string): Promise<any> {
-    return apiInstance.get(`/tutorials?title=${title}`);
+  getPokemon(id: number): Promise<any> {
+    return apiInstance.get(`/pokemon/${id}`);
   }
 }
 
