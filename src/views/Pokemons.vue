@@ -34,7 +34,15 @@
                 ></v-toolbar-title>
 
                 <template v-slot:append>
-                  <v-btn icon="mdi-heart-outline" variant="text"></v-btn>
+                  <v-btn
+                    :icon="
+                      checkPokemonIsFavorite(getPokemonId(pokemon)) === -1
+                        ? 'mdi-heart-outline'
+                        : 'mdi-heart'
+                    "
+                    variant="text"
+                    @click="addToFavoritesPokemon(pokemon)"
+                  ></v-btn>
                 </template>
               </v-toolbar>
             </v-img>
@@ -63,6 +71,8 @@ import { defineComponent } from "vue";
 import Pokemons from "@/types/getPokemonsResponse";
 import pokemonService from "@/services/pokemonService";
 import Loader from "@/components/Loader/Loader.vue";
+import { usePokemonStore } from "@/store/pokemon";
+import { mapActions } from "pinia";
 
 export default defineComponent({
   // Option API
@@ -98,6 +108,10 @@ export default defineComponent({
     this.getPokemons(0, this.itemsPerPage);
   },
   methods: {
+    ...mapActions(usePokemonStore, [
+      "checkPokemonIsFavorite",
+      "addFavoritePokemon",
+    ]),
     getPokemons(offset: number, limit: number) {
       this.loading = true;
       pokemonService
@@ -105,7 +119,6 @@ export default defineComponent({
         .then((response: any) => {
           this.pokemons = response.data.results;
           this.totalItems = response.data.count;
-          console.log(response.data);
         })
         .catch((e: Error) => {
           console.log(e);
@@ -121,8 +134,18 @@ export default defineComponent({
     },
     showPokemon(pokemon: any) {
       let id = this.getPokemonId(pokemon);
-      console.log("pokemon ", id);
       this.$router.push(`/pokemons/${id}`);
+    },
+    addToFavoritesPokemon(pokemon: any) {
+      let id = this.getPokemonId(pokemon);
+      pokemonService
+        .getPokemon(id)
+        .then((response: any) => {
+          this.addFavoritePokemon(response.data);
+        })
+        .catch((e: Error) => {
+          console.log(e);
+        });
     },
   },
 });

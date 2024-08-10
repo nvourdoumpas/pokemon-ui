@@ -16,11 +16,27 @@
           </v-col>
           <v-col cols="12" md="8">
             <v-card flat height="100%" color="transparent">
-              <v-card-title
-                class="mt-4 text-h5 text-uppercase font-weight-black"
-              >
-                <span class="font-italic"># {{ pokemon.id }}</span> -
-                {{ pokemon.name }}
+              <v-card-title>
+                <v-toolbar color="transparent">
+                  <v-toolbar-title
+                    class="mt-4 text-h5 text-uppercase font-weight-black"
+                  >
+                    <span class="font-italic"># {{ pokemon.id }}</span> -
+                    {{ pokemon.name }}
+                  </v-toolbar-title>
+
+                  <template v-slot:append>
+                    <v-btn
+                      :icon="
+                        checkPokemonIsFavorite() === -1
+                          ? 'mdi-heart-outline'
+                          : 'mdi-heart'
+                      "
+                      variant="text"
+                      @click="addFavoritePokemon()"
+                    ></v-btn>
+                  </template>
+                </v-toolbar>
               </v-card-title>
               <v-divider class="mr-6"></v-divider>
               <v-card-text>
@@ -135,6 +151,7 @@ import { defineComponent, reactive, ref } from "vue";
 import Loader from "@/components/Loader/Loader.vue";
 import Pokemon from "@/types/getPokemonResponse";
 import pokemonService from "@/services/pokemonService";
+import { usePokemonStore } from "@/store/pokemon";
 
 export default defineComponent({
   // Composition API
@@ -147,6 +164,7 @@ export default defineComponent({
   async setup(props) {
     let loading = ref<boolean>(false);
     let pokemon = reactive({}) as Pokemon;
+    const pokemonStore = usePokemonStore();
 
     loading.value = true;
     await pokemonService
@@ -166,7 +184,21 @@ export default defineComponent({
         .href;
     };
 
-    return { loading, pokemon, getTypeImage };
+    const addFavoritePokemon = () => {
+      pokemonStore.addFavoritePokemon(pokemon);
+    };
+
+    const checkPokemonIsFavorite = (): number => {
+      return pokemonStore.checkPokemonIsFavorite(pokemon.id);
+    };
+
+    return {
+      loading,
+      pokemon,
+      getTypeImage,
+      addFavoritePokemon,
+      checkPokemonIsFavorite,
+    };
   },
   components: {
     Loader,
