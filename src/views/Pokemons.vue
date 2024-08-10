@@ -65,6 +65,7 @@ import pokemonService from "@/services/pokemonService";
 import Loader from "@/components/Loader/Loader.vue";
 
 export default defineComponent({
+  // Option API
   setup() {
     return {};
   },

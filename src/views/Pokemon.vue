@@ -131,49 +131,45 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import Loader from "@/components/Loader/Loader.vue";
 import Pokemon from "@/types/getPokemonResponse";
 import pokemonService from "@/services/pokemonService";
 
 export default defineComponent({
-  setup() {
-    return {};
-  },
+  // Composition API
   props: {
     id: {
       type: Number,
       required: true,
     },
   },
-  data() {
-    return {
-      loading: false,
-      pokemon: {} as Pokemon,
-    };
-  },
-  components: {
-    Loader,
-  },
-  created() {
-    this.loading = true;
-    pokemonService
-      .getPokemon(this.id)
+  async setup(props) {
+    let loading = ref<boolean>(false);
+    let pokemon = reactive({}) as Pokemon;
+
+    loading.value = true;
+    await pokemonService
+      .getPokemon(props.id)
       .then((response: any) => {
-        this.pokemon = response.data;
+        pokemon = response.data;
       })
       .catch((e: Error) => {
         console.log(e);
       })
       .finally(() => {
-        this.loading = false;
+        loading.value = false;
       });
-  },
-  methods: {
-    getTypeImage(type: string) {
+
+    const getTypeImage = (type: string) => {
       return new URL(`../assets/pokemonTypes/${type}.jpg`, import.meta.url)
         .href;
-    },
+    };
+
+    return { loading, pokemon, getTypeImage };
+  },
+  components: {
+    Loader,
   },
 });
 </script>
