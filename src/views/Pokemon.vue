@@ -157,18 +157,17 @@ export default defineComponent({
   // Composition API
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
   async setup(props) {
-    let loading = ref<boolean>(false);
+    let loading = ref<boolean>(true);
     let pokemon = reactive({}) as Pokemon;
     const pokemonStore = usePokemonStore();
 
-    loading.value = true;
     await pokemonService
-      .getPokemon(props.id)
+      .getPokemon(Number(props.id))
       .then((response: any) => {
         pokemon = response.data;
       })
